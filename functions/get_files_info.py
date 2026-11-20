@@ -27,7 +27,18 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
         if not os.path.isdir(target_dir_real):
             return f'Error: "{directory}" is not a directory'
 
-        return f'Success: "{directory}" is within the working directory'
-    except (OSError, TypeError, ValueError) as error:
-        # Report filesystem and path errors instead of letting them escape.
+        # Collect the requested metadata for each item in the directory.
+        entries = []
+        for name in os.listdir(target_dir_real):
+            item_path = os.path.join(target_dir_real, name)
+            file_size = os.path.getsize(item_path)
+            is_directory = os.path.isdir(item_path)
+            entries.append(
+                f"- {name}: file_size={file_size} bytes, "
+                f"is_dir={is_directory}"
+            )
+
+        return "\n".join(entries)
+    except Exception as error:
+        # Report standard-library errors instead of letting them escape.
         return f"Error: {error}"
