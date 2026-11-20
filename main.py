@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -9,8 +10,6 @@ if api_key is None:
         "API_KEY environment variable not found."
         "Please set the API_KEY environment variable before running this application."
     )
-
-from openai import OpenAI
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
@@ -27,4 +26,8 @@ response = client.chat.completions.create(
     ],
 )
 
+print(f"User prompt: Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum.")
+print(f"Prompt tokens: {response.usage.prompt_tokens}")
+print(f"Response tokens: {response.usage.completion_tokens}")
+print("Response:")
 print(response.choices[0].message.content)
