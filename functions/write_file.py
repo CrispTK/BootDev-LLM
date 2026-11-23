@@ -28,3 +28,25 @@ def write_file(working_directory: str, file_path: str, content: str) -> str:
     except Exception as error:
         # Return standard-library failures as text for the agent to handle.
         return f"Error: {error}"
+
+# Function schema
+schema_write_file = {
+    "type": "function",
+    "function": {
+        "name": "write_file",
+        "description": "Creates a new file or overwrites an existing file with the provided content within a specified working directory",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "The path to the file that should be created or updated, relative to the working directory",
+                },
+                "content": {
+                    "type": "string",
+                    "description": "The text content that should be written to the file"
+                }
+            },
+        },
+    },
+}

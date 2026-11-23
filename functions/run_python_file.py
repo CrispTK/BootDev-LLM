@@ -56,3 +56,28 @@ def run_python_file(
     except Exception as error:
         # Return standard-library failures as text for the agent to handle.
         return f"Error: executing Python file: {error}"
+
+# Function schema
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "Executes a Python file within a specified working directory, optionally passing command-line arguments, and returns the program's output or any execution errors",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "The path to the Python file, relative to the working directory",
+                },
+                "args": {
+                    "type": "array",
+                    "description": "Optional command-line argument(s) passed to the Python script",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+        },
+    },
+}

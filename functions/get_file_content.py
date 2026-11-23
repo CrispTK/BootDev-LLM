@@ -27,3 +27,21 @@ def get_file_content(working_directory: str, file_path: str) -> str:
     except Exception as error:
         # Return standard-library failures as text for the agent to handle.
         return f"Error: {error}"
+
+# Function schema
+schema_get_file_content = {
+    "type": "function",
+    "function": {
+        "name": "get_file_content",
+        "description": "Reads and returns the contents of a specified file within a permitted working directory",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "The path to the file that should be read, relative to the working directory",
+                },
+            },
+        },
+    },
+}
