@@ -4,7 +4,7 @@ from openai import OpenAI
 import argparse
 from prompts import system_prompt
 import json
-from call_function import available_functions
+from call_function import available_functions, call_function
 
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
@@ -46,11 +46,13 @@ message = response.choices[0].message
 
 if message.tool_calls:
     for tool_call in message.tool_calls:
-        function_args = json.loads(
-            tool_call.function.arguments or "{}"
-        )
-        print(
-            f"Calling function: {tool_call.function.name}({function_args})"
-        )
+        result_message = call_function(tool_call, args.verbose)
+
+        if not result_message["content"]:
+            raise Exception("Function call returned empty content")
+
+        if args.verbose:
+            print(f"-> {result_message['content']}")
+
 else:
     print(message.content)
